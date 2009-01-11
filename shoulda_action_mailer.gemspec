@@ -21,11 +21,10 @@ Gem::Specification.new do |s|
   # run git ls-files to get an updated list
   s.files = %w[
     HISTORY.markdown
+    LICENSE
     README.markdown
-    lib/action_mailer.rb
     lib/shoulda_action_mailer.rb
-    shoulda_action_mailer.gemspec
-  ]
+    shoulda_action_mailer.gemspec  ]
   
   s.test_files = %w[
   ]
