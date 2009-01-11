@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "shoulda_action_mailer"
-  s.version  = "0.1.0"
+  s.version  = "0.1.1"
   s.date     = "2009-01-10"
   s.summary  = "Shoulda macros and more assertions for Action Mailer and ActionMailer::TestCase"
   s.email    = %w[gus@gusg.us]
