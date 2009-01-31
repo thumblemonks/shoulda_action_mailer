@@ -23,7 +23,7 @@ And then do this in your `test_helper.rb` (or whatever you call it for your envi
 
 Or do this in your Rails app's environment.rb:
 
-    config.gem 'thumblemonks-shoulda_action_mailer', :lib => 'shoulda_action_mailer', :source => 'http://gems.github.com'
+    config.gem 'thumblemonks-shoulda_action_mailer', :lib => false, :source => 'http://gems.github.com'
 
 # Uh ... where are the tests?
 
