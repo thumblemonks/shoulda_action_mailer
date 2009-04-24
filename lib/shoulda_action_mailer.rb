@@ -97,7 +97,7 @@ module Thumblemonks
       def handle_a_list(named, accessed_as, expected=nil, &block)
         should "have #{named}" do
           expected = self.instance_eval(&block) if block_given?
-          assert_same_elements Array(expected), @email.send(accessed_as)
+          assert_same_elements Array(expected), Array(@email.send(accessed_as))
         end
       end
     end # Shoulda
