@@ -1,7 +1,9 @@
-module Thumblemonks
+module Thumblemonks #:nodoc:
   module ActionMailer
-    # Every macro here assumes an instance variable named @email is defined and
-    # is an instance of a TMail object.
+    # Every should_action_mailer macro assumes an instance variable named @email is defined and
+    # is an instance of a TMail object. Even the ones that work on parts.
+    #
+    # When we support Shoulda 2.10.2, we will switch to subject
     module Shoulda
       # Tries to match the provided subject with that of the email's. Regular
       # expressions are valid inputs.
@@ -74,7 +76,7 @@ module Thumblemonks
         handle_a_list("reply to's", :reply_to, reply_to_list, &block)
       end
 
-      # Asserts that the email body matches the value provided.
+      # Asserts that the email or part body matches the value provided.
       # 
       #   should_match_body /Sincerely,\nYour Mom/
       #   should_match_body %r[Dear John,]
@@ -93,6 +95,77 @@ module Thumblemonks
         end
       end
 
+      # Asserts that the email has at least one part attached to it.
+      # 
+      #    should_have_mime_parts
+      # 
+      # If provided with option `:count`, asserts that the exact number of parts are attached.
+      # 
+      #    should_have_mime_parts :count => 2
+      def should_have_mime_parts(opts={})
+        if count_of_parts = opts[:count]
+          should "have #{count_of_parts} message part(s)" do
+            assert_equal count_of_parts, Array(@email.parts).length
+          end
+        else
+          should("have at least one message part") { assert Array(@email.parts).length > 0 }
+        end
+      end
+
+      # Asserts that the content type of the email or part matches the expectation.
+      # 
+      #     should_have_mime_content_type "text/plain"
+      #     should_have_mime_content_type "multipart/alternative" # For multi-part emails without attachments
+      #     should_have_mime_content_type "multipart/mixed"       # For multi-part emails with attachments
+      #     should_have_mime_content_type "text/csv"              # For file attachments
+      def should_have_mime_content_type(name)
+        should "have #{name} content type" do
+          @email.to_s # Not doing this means the content-type is never generated (i smell bug)
+          assert_equal name, @email["content-type"].content_type
+        end
+      end
+
+      # Asserts that the charset of the email or part matches the expectation. Expects the charset to be
+      # defined on the Content-Type header.
+      # 
+      #     should_have_mime_content_type "text/utf-8"
+      def should_use_charset(name)
+        should("use #{name} charset") { assert_equal name, @email["content-type"]["charset"] }
+      end
+
+      # Asserts that the content-disposition of the part is "inline". Meaning, the content is to be displayed
+      # in the readers viewer immediately (different than an attachment). Basically, you've put some text in
+      # the email you want the reader to see.
+      # 
+      #     should_be_inlined_content
+      def should_be_inlined_content
+        should("be inline content") { assert_equal "inline", @email["content-disposition"].disposition }
+      end
+
+      # Asserts that the content-disposition of the part is "attachment". Meaning, the reader has to do
+      # something to see the content. Whenever you use the `ActionMailer::Base#attachment` method, you'll
+      # get this disposition.
+      # 
+      #     should_be_an_attachment
+      #
+      # If you provide a filename option, this method will assert that the attachment filename matches your
+      # expectation.
+      #
+      #     should_be_an_attachment :filename => "file.pdf"
+      def should_be_an_attachment(opts={})
+        should("be an attachment") { assert_equal "attachment", @email["content-disposition"].disposition }
+        should_have_filename(opts[:filename]) if opts[:filename]
+      end
+
+      # Asserts that the attachment (most likely) has a filename attribute and that it matches the expected
+      # filename.
+      #
+      #     should_have_filename "file.pdf"
+      def should_have_filename(filename)
+        should "have filename of #{filename}" do
+          assert_equal filename, @email["content-disposition"]["filename"]
+        end
+      end
     private
       def handle_a_list(named, accessed_as, expected=nil, &block)
         should "have #{named}" do

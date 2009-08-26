@@ -8,6 +8,12 @@ While Shoulda does ship with some Action Mailer assertions, it does not ship wit
 * should\_have\_from
 * should\_have\_reply\_to
 * should\_match\_body
+* should\_have\_mime\_parts - *also with counts*
+* should\_have\_mime\_content\_type
+* should\_use\_charset
+* should\_be\_inlined_content
+* should\_be\_an\_attachment - *also with a check for filename*
+* should\_have\_filename
 
 Incidentally, those happen to be all the macros supported for now. We fully intend to have macros for everything in Action Mailer, but didn't have a need for any others yet (read: nothing forced us to write them yet). So, if you have a need for some others, please feel MORE THAN FREE to fork, add, and send a pull request so we can add them in.
 
@@ -15,13 +21,15 @@ For documentation, just look at the only file in the lib directory for now. Or, 
 
 ### Installing & Using
 
+Install as a gem:
+
     sudo gem install thumblemonks-shoulda_action_mailer
 
 And then do this in your `test_helper.rb` (or whatever you call it for your environment):
 
     require 'shoulda_action_mailer'
 
-Or do this in your Rails app's environment.rb:
+Or, just tell Rails about them by doing this in your app's `test.rb`:
 
     config.gem 'thumblemonks-shoulda_action_mailer', :lib => false, :source => 'http://gems.github.com'
 

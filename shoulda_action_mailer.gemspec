@@ -1,12 +1,13 @@
 Gem::Specification.new do |s|
-  s.name     = "shoulda_action_mailer"
-  s.version  = "0.1.1"
-  s.date     = "2009-01-10"
-  s.summary  = "Shoulda macros and more assertions for Action Mailer and ActionMailer::TestCase"
+  s.name     = "thumblemonks-shoulda_action_mailer"
+  s.version  = "0.2"
+  s.date     = "2009-08-26"
+  s.summary  = "Shoulda macros and more assertions for Action Mailer and ActionMailer::TestCase; now includes tests for parts."
   s.email    = %w[gus@gusg.us]
   s.homepage = "http://github.com/thumblemonks/shoulda_action_mailer"
-  s.description = "Shoulda macros and more assertions for Action Mailer and ActionMailer::TestCase"
+  s.description = "Shoulda macros and more assertions for Action Mailer and ActionMailer::TestCase; now includes tests for parts."
   s.authors  = %w[Justin\ Knowlden]
+  s.post_install_message = %q{Choosy mailpersons choose Thumble Monks.}
 
   s.rubyforge_project = %q{load_model}
 
